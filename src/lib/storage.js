@@ -13,13 +13,23 @@ function writeRaw(entries) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(entries))
 }
 
+function makeId() {
+  try {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return crypto.randomUUID()
+    }
+  } catch (e) {
+  }
+  return `${Date.now()}-${Math.floor(Math.random() * 1_000_000)}`
+}
+
 export function getEntries() {
   return readRaw()
 }
 
 export function saveEntry(entry) {
   const entries = readRaw()
-  const id = Date.now()
+  const id = makeId()
   const newEntry = { id, ...entry }
   entries.push(newEntry)
   writeRaw(entries)
