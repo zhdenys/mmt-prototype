@@ -1,3 +1,4 @@
+// src/lib/storage.js
 export const STORAGE_KEY = 'mmt_entries_v1'
 
 function readRaw() {
@@ -13,14 +14,9 @@ function writeRaw(entries) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(entries))
 }
 
+
 function makeId() {
-  try {
-    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-      return crypto.randomUUID()
-    }
-  } catch (e) {
-  }
-  return `${Date.now()}-${Math.floor(Math.random() * 1_000_000)}`
+  return Date.now() * 1000 + Math.floor(Math.random() * 1000)
 }
 
 export function getEntries() {
