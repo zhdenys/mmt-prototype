@@ -1,5 +1,10 @@
 name: CI / CD
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 on:
   push:
     branches: [ main ]
@@ -13,9 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - run: npm ci
-      - run: npm test
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run unit tests
+        run: npm test
 
   build-and-deploy:
     name: Build and deploy to GitHub Pages
@@ -25,9 +33,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - run: npm ci
-      - run: npm run build
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build (production)
+        run: npm run build
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
